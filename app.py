@@ -94,12 +94,25 @@ def generate_description(frames):
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
+    
+    
+    
+def generate_voice(description):
+    
+    client = OpenAI()    
+    response = client.audio.speech.create(
+        model="tts-1",
+        voice="alloy",
+        input= description,
+    )
+    response.stream_to_file("output2.mp3")
 
 if __name__ == "__main__":
     target_profile = 'apple'
-    video_files = download_videos(target_profile)
+    # video_files = download_videos(target_profile)
 
-    for video_file in video_files:
-        frames = extract_frames(video_file, max_frames=5)  # Adjust max_frames as needed
-        description = generate_description(frames)
-        print(description)
+    # for video_file in video_files:
+    #     frames = extract_frames(video_file, max_frames=5)  # Adjust max_frames as needed
+    #     description = generate_description(frames)
+    #     print(description)
+    generate_voice("Hello I am inamulrehman, I am a hackathon enthusiast.")
