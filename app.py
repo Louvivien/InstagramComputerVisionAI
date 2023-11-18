@@ -34,40 +34,42 @@ def download_videos(target_profile):
 
     return video_paths
 
-def extract_frames(video_path, frame_skip=10, max_frames=5):
+
+
+
+def extract_frames(video_path, max_frames=5):
     if not os.path.exists(video_path):
         print(f"Video file not found: {video_path}")
         return []
-    """
-    Extracts frames from a video, skipping a set number of frames.
 
-    :param video_path: Path to the video file.
-    :param frame_skip: Number of frames to skip. Default is 10.
-    :return: List of base64-encoded frames.
-    """
     print(f"Opening video file: {video_path}")
     absolute_video_path = os.path.abspath(video_path)
     video = cv2.VideoCapture(absolute_video_path)
+
+    # Calculate the total number of frames and the interval for frame extraction
+    total_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
+    frame_interval = total_frames // max_frames
+
     base64_frames = []
-    frame_count = 0
+    for i in range(max_frames):
+        # Set the video position to the frame number
+        frame_number = i * frame_interval
+        video.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
 
-    added_frames = 0
-
-
-    while video.isOpened() and added_frames < max_frames:
         success, frame = video.read()
         if not success:
             break
 
-        if frame_count % frame_skip == 0:
-            _, buffer = cv2.imencode(".jpg", frame)
-            base64_frames.append(base64.b64encode(buffer).decode("utf-8"))
-            added_frames += 1
-
-        frame_count += 1
+        _, buffer = cv2.imencode(".jpg", frame)
+        base64_frames.append(base64.b64encode(buffer).decode("utf-8"))
 
     video.release()
     return base64_frames
+
+
+
+
+
 
 def generate_description(frames):
     client = OpenAI(api_key=openai_api_key)
@@ -98,6 +100,6 @@ if __name__ == "__main__":
     video_files = download_videos(target_profile)
 
     for video_file in video_files:
-        frames = extract_frames(video_file, frame_skip=10, max_frames=5)  # Adjust max_frames as needed
+        frames = extract_frames(video_file, max_frames=5)  # Adjust max_frames as needed
         description = generate_description(frames)
         print(description)
