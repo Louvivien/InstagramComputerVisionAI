@@ -85,6 +85,8 @@ def generate_description(frames):
         chat_completion = client.chat.completions.create(
             messages=prompt_messages,
             model="gpt-4-vision-preview",
+            max_tokens=1000  
+
         )
         return chat_completion.choices[0].message.content
     except Exception as e:
