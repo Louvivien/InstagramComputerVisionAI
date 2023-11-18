@@ -11,6 +11,8 @@
 # production
 /build
 
+/videos
+
 # dotenv environment variables file
 *.env
 *.env.production
