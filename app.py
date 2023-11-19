@@ -97,7 +97,7 @@ def generate_voice(description, filename, openai_api_key):
 
 # Streamlit app
 def main():
-    st.title("Instagram Video Description Generator")
+    st.title("Instagram Video Computer Vision")
 
     # Environment variables input
     st.sidebar.header("Environment Variables")
