@@ -9,10 +9,22 @@ from dotenv import load_dotenv
 # Function to download videos from Instagram
 def download_videos(target_profile, username, password):
     cl = Client()
-    cl.login(username, password)
+    try:
+        cl.login(username, password)
+    except Exception as e:
+        if "ProxyAddressIsBlocked" in str(e):
+            st.error("Your IP is blocked by Instagram for API operations, please use another IP")
+            return []
+        else:
+            st.error(f"An error occurred during login: {e}")
+            return []
 
-    user_id = cl.user_id_from_username(target_profile)
-    medias = cl.user_medias(user_id, amount=5)
+    try:
+        user_id = cl.user_id_from_username(target_profile)
+        medias = cl.user_medias(user_id, amount=5)
+    except Exception as e:
+        st.error(f"An error occurred while fetching media: {e}")
+        return []
 
     video_paths = []
     if not os.path.exists('videos'):
@@ -20,11 +32,15 @@ def download_videos(target_profile, username, password):
 
     for media in medias:
         if media.media_type == 2:  # 2 represents a video
-            video_path = cl.video_download(media.pk, folder='./videos')
-            st.write(f"Downloaded video path: {video_path}")
-            video_paths.append(video_path)
+            try:
+                video_path = cl.video_download(media.pk, folder='./videos')
+                st.write(f"Downloaded video path: {video_path}")
+                video_paths.append(video_path)
+            except Exception as e:
+                st.error(f"An error occurred while downloading video: {e}")
 
     return video_paths
+
 
 # Function to extract frames from a video
 def extract_frames(video_path, max_frames=5):
@@ -95,6 +111,21 @@ def generate_voice(description, filename, openai_api_key):
     st.write(f"Narration saved for file: {filename}")
     return mp3_path
 
+# Function to delete video and MP3 files
+def delete_files(video_path, mp3_path):
+        try:
+            if os.path.exists(video_path):
+                os.remove(video_path)
+                st.write(f"Deleted video file: {video_path}")
+
+            if os.path.exists(mp3_path):
+                os.remove(mp3_path)
+                st.write(f"Deleted MP3 file: {mp3_path}")
+        except Exception as e:
+            st.error(f"An error occurred while deleting files: {e}")
+
+
+
 # Streamlit app
 def main():
     st.title("Instagram Video Computer Vision")
@@ -121,6 +152,12 @@ def main():
             # Display MP3 file
             if os.path.exists(mp3_path):
                 st.audio(mp3_path)
+
+            # Button to delete video and MP3
+            if st.button(f"Delete Video and MP3 for {video_filename}"):
+                delete_files(video_file, mp3_path)
+                st.success(f"Deleted video and MP3 files for {video_filename}")
+
 
 if __name__ == "__main__":
     main()
