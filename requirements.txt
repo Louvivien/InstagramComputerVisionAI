@@ -4,3 +4,4 @@ instagrapi
 opencv-python
 openai
 streamlit
+
