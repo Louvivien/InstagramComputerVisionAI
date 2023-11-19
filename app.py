@@ -97,22 +97,32 @@ def generate_description(frames):
     
     
     
-def generate_voice(description):
-    
-    client = OpenAI()    
+def generate_voice(description, filename):
+    client = OpenAI(api_key=openai_api_key)  # Ensure you use the API key here
     response = client.audio.speech.create(
         model="tts-1",
         voice="alloy",
-        input= description,
+        input=description,
     )
-    response.stream_to_file("output2.mp3")
+
+    # Check if mp3 directory exists, if not create it
+    if not os.path.exists('mp3'):
+        os.makedirs('mp3')
+
+    mp3_path = os.path.join('mp3', f"{filename}.mp3")
+    response.stream_to_file(mp3_path)
+    print(f"Narration saved for file: {filename}")
+
 
 if __name__ == "__main__":
     target_profile = 'apple'
-    # video_files = download_videos(target_profile)
+    video_files = download_videos(target_profile)
 
-    # for video_file in video_files:
-    #     frames = extract_frames(video_file, max_frames=5)  # Adjust max_frames as needed
-    #     description = generate_description(frames)
-    #     print(description)
-    generate_voice("Hello I am inamulrehman, I am a hackathon enthusiast.")
+    for video_file in video_files:
+        frames = extract_frames(video_file, max_frames=5)  # Adjust max_frames as needed
+        description = generate_description(frames)
+        print(description)
+
+        # Extract filename without extension and pass it to generate_voice
+        video_filename = os.path.splitext(os.path.basename(video_file))[0]
+        generate_voice(description, video_filename)
