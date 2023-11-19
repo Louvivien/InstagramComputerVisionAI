@@ -130,6 +130,10 @@ def delete_files(video_path, mp3_path):
 def main():
     st.title("Instagram Video Computer Vision")
 
+    # Initialize session state
+    if 'video_mp3_paths' not in st.session_state:
+        st.session_state['video_mp3_paths'] = []
+
     # Environment variables input
     st.sidebar.header("Environment Variables")
     insta_username = st.sidebar.text_input("Instagram Username")
@@ -139,9 +143,13 @@ def main():
     # Target profile input
     target_profile = st.text_input("Enter the Instagram profile to analyze:", value="apple")
 
+
     if st.button("Analyze Videos"):
         video_files = download_videos(target_profile, insta_username, insta_password)
         for video_file in video_files:
+            # Convert PosixPath to string and display the video player
+            st.video(str(video_file))
+
             frames = extract_frames(video_file, max_frames=5)
             description = generate_description(frames, openai_api_key)
             st.write(description)
@@ -149,14 +157,17 @@ def main():
             video_filename = os.path.splitext(os.path.basename(video_file))[0]
             mp3_path = generate_voice(description, video_filename, openai_api_key)
 
-            # Display MP3 file
+            # Display MP3 file and update session state
             if os.path.exists(mp3_path):
                 st.audio(mp3_path)
+                st.session_state['video_mp3_paths'].append((video_file, mp3_path))
 
-            # Button to delete video and MP3
-            if st.button(f"Delete Video and MP3 for {video_filename}"):
-                delete_files(video_file, mp3_path)
-                st.success(f"Deleted video and MP3 files for {video_filename}")
+    # Button to delete all video and MP3 files
+    if st.button("Delete All Videos and MP3s"):
+        for video_path, mp3_path in st.session_state['video_mp3_paths']:
+            delete_files(video_path, mp3_path)
+        st.success("Deleted all video and MP3 files")
+        st.session_state['video_mp3_paths'] = []  # Reset the session state
 
 
 if __name__ == "__main__":
