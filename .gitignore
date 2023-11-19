@@ -12,6 +12,7 @@
 /build
 
 /videos
+/mp3
 
 # dotenv environment variables file
 *.env
