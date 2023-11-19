@@ -3,3 +3,4 @@ python-dotenv
 instagrapi
 opencv-python
 openai
+streamlit
