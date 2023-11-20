@@ -11,6 +11,7 @@ def download_videos(target_profile, username, password):
     cl = Client()
     try:
         cl.login(username, password)
+    
     except Exception as e:
         if "ProxyAddressIsBlocked" in str(e):
             st.error("Your IP is blocked by Instagram for API operations, please use another IP")
