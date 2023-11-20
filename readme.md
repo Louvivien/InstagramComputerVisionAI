@@ -1,10 +1,10 @@
 # InstagramComputerVisionAI 
 
-# Introduction
+<!-- # Introduction -->
 <p> Wellcome to Instagram Computer Vision AI Based Video Summary Generation Tool! </p>
 
-<p>There is diverse content on Instagram that people see. It is sometimes very time-consuming to figure out what is in the video. Some people may find it difficult to find out the video insights. Instagram users spend time figuring out what is in the video by watching it even if the video is not of their interest. Some figure out about the video from the comments. Analyzing video insights is one of the challenges people face and wastes a lot of time.</p>
-<p>Our solution Instagaram Computer Vision AI solves their problem by generating the text description of the video. So users of Instagram do not need to watch the video to get insights instead they can read the description of the video. We have also provided the audio of the description of the video insights so that if some users are not comfortable reading they can listen to the audio without watching the video to get the insights of the video.</p>
+<!-- <p>There is diverse content on Instagram that people see. It is sometimes very time-consuming to figure out what is in the video. Some people may find it difficult to find out the video insights. Instagram users spend time figuring out what is in the video by watching it even if the video is not of their interest. Some figure out about the video from the comments. Analyzing video insights is one of the challenges people face and wastes a lot of time.</p>
+<p>Our solution Instagaram Computer Vision AI solves their problem by generating the text description of the video. So users of Instagram do not need to watch the video to get insights instead they can read the description of the video. We have also provided the audio of the description of the video insights so that if some users are not comfortable reading they can listen to the audio without watching the video to get the insights of the video.</p> -->
 
 # Features
 * User can enter the profile he wants to analyze
@@ -45,7 +45,9 @@ Team includes
 # Demo
 <p>
   Check out the demo of our application 
-  <a href="#" target="_blank" >Video presentation link here</a>
+  <a href="https://clipchamp.com/watch/A6L2I08Wf0w" target="_blank" >Video Link</a>
+  Live App Link
+  <a href="https://instagramcomputervision.streamlit.app/" target="_blank" >Instagram Computer Vision AI</a>
 </p>
 
 
@@ -55,6 +57,3 @@ Team includes
 2. pip install -r requirements.txt
 3. Rename .env.example to .env and configure your credentials
 4. Python3 app.py or Python app.py
-
-
-The 2 mp4 videos of apple should be downloaded in the InstagramComputerVisionAI\videos folder.
