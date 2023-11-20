@@ -69,6 +69,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## Acknowledgments
 
 - Thanks to LabLab.ai for hosting the Multimodal Hackathon.
-- Special thanks to the OpenAI team for GPT-4 Vision.
 
 
